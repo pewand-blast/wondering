@@ -1,0 +1,30 @@
+{
+  "name": "wondering-cms",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "next dev --port 3001",
+    "dev:3001": "next dev --port 3001",
+    "studio": "sanity dev --host 0.0.0.0",
+    "dev:3334": "sanity dev --host 0.0.0.0 --port 3334",
+    "build": "next build",
+    "build:studio": "sanity build",
+    "deploy": "sanity deploy"
+  },
+  "dependencies": {
+    "@sanity/client": "^7.22.1",
+    "@sanity/image-url": "^2.1.1",
+    "@sanity/vision": "^5.28.0",
+    "next": "^16.2.6",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6",
+    "sanity": "^5.28.0",
+    "sanity-plugin-media": "^4.3.0",
+    "styled-components": "^6.1.19"
+  },
+  "devDependencies": {
+    "@types/node": "25.9.1",
+    "typescript": "^5.8.3"
+  }
+}

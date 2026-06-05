@@ -1,0 +1,170 @@
+import {defineField, defineType} from 'sanity'
+
+export const homePage = defineType({
+  name: 'homePage',
+  title: 'Home page',
+  type: 'document',
+  fields: [
+    defineField({
+      name: 'heroVideoSource',
+      title: 'Hero video source',
+      type: 'string',
+      description: 'Choose how the landing page hero video is supplied.',
+      options: {
+        list: [
+          {title: 'YouTube', value: 'youtube'},
+          {title: 'Vimeo', value: 'vimeo'},
+          {title: 'MP4 upload', value: 'mp4'},
+        ],
+        layout: 'radio',
+      },
+      initialValue: 'youtube',
+    }),
+    defineField({
+      name: 'heroVideoUrl',
+      title: 'Hero video URL',
+      type: 'url',
+      description: 'YouTube or Vimeo URL used as the autoplaying home page hero video.',
+      hidden: ({document}) => document?.heroVideoSource === 'mp4',
+      validation: (Rule) =>
+        Rule.uri({
+          scheme: ['https'],
+          allowRelative: false,
+        }),
+    }),
+    defineField({
+      name: 'heroVideoFile',
+      title: 'Hero MP4 upload',
+      type: 'file',
+      description: 'Upload an MP4 for the cleanest full-bleed autoplay hero with no embedded player controls.',
+      hidden: ({document}) => document?.heroVideoSource !== 'mp4',
+      options: {
+        accept: 'video/mp4',
+      },
+    }),
+    defineField({
+      name: 'heroHeadlineLines',
+      title: 'Hero headline lines',
+      type: 'array',
+      description: 'H1 copy lines that rotate/change over the landing video.',
+      of: [{type: 'string'}],
+      validation: (Rule) => Rule.required().min(1),
+    }),
+    defineField({
+      name: 'heroVideoAutoplay',
+      title: 'Autoplay hero video',
+      type: 'boolean',
+      description: 'When enabled, the frontend should autoplay the hero video and hide video controls.',
+      initialValue: true,
+    }),
+    defineField({
+      name: 'heroCta',
+      title: 'Hero CTA',
+      type: 'callToAction',
+    }),
+    defineField({
+      name: 'aboutHeading',
+      title: 'About heading',
+      type: 'string',
+      initialValue: 'About us',
+    }),
+    defineField({
+      name: 'aboutBody',
+      title: 'About body',
+      type: 'text',
+      rows: 6,
+    }),
+    defineField({
+      name: 'aboutCta',
+      title: 'About CTA',
+      type: 'callToAction',
+      initialValue: {label: 'Learn more', href: '/about'},
+    }),
+    defineField({
+      name: 'filmsHeading',
+      title: 'Films heading',
+      type: 'string',
+      initialValue: 'Our films',
+    }),
+    defineField({
+      name: 'filmsIntro',
+      title: 'Films intro',
+      type: 'text',
+      rows: 3,
+    }),
+    defineField({
+      name: 'filmsCta',
+      title: 'Films CTA',
+      type: 'callToAction',
+      initialValue: {label: 'Enter Cinema', href: '/cinema'},
+    }),
+    defineField({
+      name: 'featuredFilms',
+      title: 'Featured films',
+      type: 'array',
+      of: [{type: 'filmReference'}],
+    }),
+    defineField({
+      name: 'impactHeading',
+      title: 'Impact heading',
+      type: 'string',
+      initialValue: 'Why we do this',
+    }),
+    defineField({
+      name: 'impactCopy',
+      title: 'Impact copy',
+      type: 'text',
+      rows: 5,
+      description: 'Copy block shown under the impact heading. Stat supporting copy is managed inside each impact block.',
+    }),
+    defineField({
+      name: 'impactBlocks',
+      title: 'Impact blocks',
+      type: 'array',
+      of: [{type: 'statBlock'}],
+    }),
+    defineField({
+      name: 'impactCta',
+      title: 'Impact CTA',
+      type: 'callToAction',
+      initialValue: {label: 'Explore our Mission & Impact', href: '/mission-impact'},
+    }),
+    defineField({
+      name: 'contactHeading',
+      title: 'Contact heading',
+      type: 'string',
+      initialValue: 'Shape stories with us',
+    }),
+    defineField({
+      name: 'contactLeftParagraph',
+      title: 'Contact left paragraph',
+      type: 'text',
+      rows: 4,
+    }),
+    defineField({
+      name: 'contactRightParagraph',
+      title: 'Contact right paragraph',
+      type: 'text',
+      rows: 4,
+    }),
+    defineField({
+      name: 'contactCta',
+      title: 'Contact CTA',
+      type: 'callToAction',
+      initialValue: {label: 'Let’s talk', href: '/contact'},
+    }),
+    defineField({
+      name: 'partnersHeading',
+      title: 'Partners heading',
+      type: 'string',
+      initialValue: 'Our partners',
+    }),
+    defineField({
+      name: 'partnerLogos',
+      title: 'Partner logos',
+      type: 'array',
+      description: 'Logos shown in the moving belt under Our partners.',
+      of: [{type: 'logoItem'}],
+    }),
+  ],
+})
