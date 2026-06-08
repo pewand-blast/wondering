@@ -11,13 +11,15 @@ const revealSelector = [
   'main h3',
   'main p',
   'main blockquote',
+  'main .figma-home-film-card__summary',
+  'main .figma-home-film-card__categories',
   'main .figma-home-button',
   'main .button-link',
   'main .film-detail-credit__names span',
   '.site-footer > *',
 ].join(',')
 
-const textSelector = 'h1,h2,h3,p,blockquote'
+const textSelector = 'h1,h2,h3,p,blockquote,.figma-home-film-card__summary,.figma-home-film-card__categories'
 const activeAnimations = new WeakMap<HTMLElement, number[]>()
 
 function escapeHtml(value: string) {
@@ -299,11 +301,14 @@ export function ScrollReveal() {
     const root = document.querySelector('.site-shell')
     if (!root) return
 
+    const isMobileLayout = window.matchMedia('(max-width: 768px)').matches
+
     const revealElements = Array.from(root.querySelectorAll<HTMLElement>(revealSelector))
       .filter((element) => {
         if (element.closest('.figma-home-hero')) return false
         if (element.closest('.stat-cycler__measure')) return false
         if (element.matches('.footer-logo') || element.closest('.footer-logo')) return false
+        if (!isMobileLayout && element.matches('.figma-home-film-card__summary, .figma-home-film-card__categories')) return false
         if (isMediaElementOrWrapper(element)) return false
         return Boolean(element.offsetParent || element.getClientRects().length)
       })
@@ -343,7 +348,12 @@ export function ScrollReveal() {
     })
 
     let resizeFrame = 0
+    let layoutWidth = window.innerWidth
     const handleResize = () => {
+      const nextLayoutWidth = window.innerWidth
+      if (nextLayoutWidth === layoutWidth) return
+      layoutWidth = nextLayoutWidth
+
       window.cancelAnimationFrame(resizeFrame)
       resizeFrame = window.requestAnimationFrame(() => {
         revealElements.forEach((element) => {
