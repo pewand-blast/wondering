@@ -610,7 +610,7 @@ textarea {
 
 @keyframes mobileMenuIn {
   from {
-    clip-path: inset(20px 20px calc(100% - 52px) calc(100% - 52px) round calc(var(--radius) * .8));
+    clip-path: inset(20px 20px calc(100% - 50.72px) calc(100% - 50.72px) round calc(var(--radius) * .768));
   }
 
   to {
@@ -624,7 +624,7 @@ textarea {
   }
 
   to {
-    clip-path: inset(20px 20px calc(100% - 52px) calc(100% - 52px) round calc(var(--radius) * .8));
+    clip-path: inset(20px 20px calc(100% - 50.72px) calc(100% - 50.72px) round calc(var(--radius) * .768));
   }
 }
 
@@ -2940,37 +2940,37 @@ textarea {
 
   .menu-button {
     height: 40px;
-    transform: scale(.8);
+    transform: scale(.768);
     transform-origin: top right;
     width: 40px;
   }
 
   .logo {
-    height: 32px;
-    width: 46px;
+    height: 30.72px;
+    width: 44.16px;
   }
 
   .topbar--full-logo .logo,
   .topbar--full-logo:not(.topbar--menu-open) .logo,
   .topbar--full-logo:not(.topbar--compact-logo):not(.topbar--menu-open) .logo {
-    height: 32px;
-    width: 46px;
+    height: 30.72px;
+    width: 44.16px;
   }
 
   .topbar--full-logo .logo-mark--full {
-    clip-path: inset(0 0 0 46px);
+    clip-path: inset(0 0 0 44.16px);
     display: block;
-    transform: translateY(-38px);
+    transform: translateY(-36.48px);
   }
 
   .topbar--full-logo:not(.topbar--menu-open) .logo-mark--full {
-    transform: translateY(-38px);
+    transform: translateY(-36.48px);
   }
 
   .topbar--full-logo .logo-mark--icon,
   .topbar--full-logo:not(.topbar--compact-logo) .logo-mark--icon {
     transform: none;
-    width: 46px;
+    width: 44.16px;
   }
 
   .menu-popover {
@@ -3060,20 +3060,20 @@ textarea {
   .topbar--menu-open .logo,
   .topbar--full-logo.topbar--menu-open .logo,
   .topbar--full-logo.topbar--menu-open.topbar--compact-logo .logo {
-    height: 32px;
-    width: min(306px, calc(100vw - 92px));
+    height: 30.72px;
+    width: min(293.76px, calc(100vw - 104px));
   }
 
   .topbar--menu-open .logo-mark--full,
   .topbar--full-logo.topbar--menu-open .logo-mark--full {
-    clip-path: inset(0 0 0 46px);
+    clip-path: inset(0 0 0 44.16px);
     display: block;
     transform: translateY(0);
   }
 
   .topbar--menu-open .logo-mark--icon {
     display: block;
-    width: 46px;
+    width: 44.16px;
   }
 
   .topbar--menu-open .menu-button {
@@ -3851,24 +3851,24 @@ textarea {
   .topbar--full-logo .logo,
   .topbar--full-logo:not(.topbar--menu-open) .logo,
   .topbar--full-logo:not(.topbar--compact-logo):not(.topbar--menu-open) .logo {
-    height: 32px;
-    width: 46px;
+    height: 30.72px;
+    width: 44.16px;
   }
 
   .topbar--full-logo .logo-mark--full {
-    clip-path: inset(0 0 0 46px);
+    clip-path: inset(0 0 0 44.16px);
     display: block;
-    transform: translateY(-38px);
+    transform: translateY(-36.48px);
   }
 
   .topbar--full-logo:not(.topbar--menu-open) .logo-mark--full {
-    transform: translateY(-38px);
+    transform: translateY(-36.48px);
   }
 
   .topbar--full-logo .logo-mark--icon,
   .topbar--full-logo:not(.topbar--compact-logo) .logo-mark--icon {
     transform: none;
-    width: 46px;
+    width: 44.16px;
   }
 
   .topbar--full-logo.topbar--menu-open .logo-mark--full {
