@@ -586,7 +586,7 @@ textarea {
 @keyframes menuPanelContentIn {
   from {
     opacity: 0;
-    transform: translateY(12px);
+    transform: translateY(-12px);
   }
 
   to {
@@ -609,21 +609,45 @@ textarea {
 
 @keyframes mobileMenuIn {
   from {
-    opacity: 0;
+    clip-path: inset(20px 20px calc(100% - 60px) calc(100% - 60px) round var(--radius));
   }
 
   to {
-    opacity: 1;
+    clip-path: inset(0 0 0 0 round 0);
   }
 }
 
 @keyframes mobileMenuOut {
   from {
+    clip-path: inset(0 0 0 0 round 0);
+  }
+
+  to {
+    clip-path: inset(20px 20px calc(100% - 60px) calc(100% - 60px) round var(--radius));
+  }
+}
+
+@keyframes mobileMenuItemIn {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -18px, 0);
+  }
+
+  to {
     opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes mobileMenuItemOut {
+  from {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
   }
 
   to {
     opacity: 0;
+    transform: translate3d(0, -10px, 0);
   }
 }
 
@@ -1053,17 +1077,35 @@ textarea {
 
 .headline-cycler span {
   grid-area: 1 / 1;
-  transform: translateY(260%);
-  transition: transform 760ms cubic-bezier(.16, 1, .3, 1);
   width: 100%;
 }
 
 .headline-cycler span.is-active {
-  transform: translateY(0);
+  animation: headlineCycleIn 900ms cubic-bezier(.19, 1, .22, 1) both;
 }
 
 .headline-cycler span.was-active {
-  transform: translateY(-260%);
+  animation: headlineCycleOut 900ms cubic-bezier(.19, 1, .22, 1) both;
+}
+
+@keyframes headlineCycleIn {
+  from {
+    transform: translateY(-260%);
+  }
+
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes headlineCycleOut {
+  from {
+    transform: translateY(0);
+  }
+
+  to {
+    transform: translateY(260%);
+  }
 }
 
 .figma-home-button {
@@ -1364,16 +1406,25 @@ textarea {
 .stat-cycler__copy {
   margin: 0;
   opacity: 1;
-  transition: opacity 1200ms cubic-bezier(.19, 1, .22, 1);
-  will-change: opacity;
+  transform: translate3d(0, 0, 0);
+  transition:
+    opacity 1400ms cubic-bezier(.19, 1, .22, 1),
+    transform 1400ms cubic-bezier(.19, 1, .22, 1);
+  will-change: opacity, transform;
 }
 
 .stat-cycler__copy.is-hidden {
   opacity: 0;
+  transform: translate3d(0, 0, 0);
 }
 
 .stat-cycler__copy.is-visible {
   opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+.stat-cycler__copy.is-entering {
+  transform: translate3d(0, 0, 0);
 }
 
 .stat-cycler__measure {
@@ -1397,6 +1448,33 @@ textarea {
 
 .stat-cycler__line {
   display: block;
+  opacity: 0;
+  transform: translate3d(0, 8px, 0);
+  transition:
+    opacity 1400ms cubic-bezier(.19, 1, .22, 1),
+    transform 1400ms cubic-bezier(.19, 1, .22, 1);
+  transition-delay: calc(var(--line-index, 0) * 90ms);
+  will-change: opacity, transform;
+}
+
+.stat-cycler__copy.is-visible .stat-cycler__line {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+.stat-cycler__copy.is-entering .stat-cycler__line {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+.stat-cycler__copy.is-hidden .stat-cycler__line {
+  opacity: 0;
+  transform: translate3d(0, 0, 0);
+  transition-delay: 0ms;
+}
+
+.stat-cycler__copy.is-hidden.is-entering .stat-cycler__line {
+  transform: translate3d(0, 8px, 0);
 }
 
 .stat-cycler__number {
@@ -2450,8 +2528,8 @@ textarea {
   display: grid;
   gap: 20px;
   grid-template-columns: minmax(150px, 31.5%) minmax(0, 1fr);
-  margin-top: 8px;
-  padding-top: 8px;
+  margin-top: 20px;
+  padding-top: 20px;
 }
 
 .contact-testimonial-card h3 {
@@ -2895,20 +2973,22 @@ textarea {
   }
 
   .menu-panel {
-    animation: mobileMenuIn 520ms cubic-bezier(.16, 1, .3, 1) both;
+    animation: mobileMenuIn 640ms cubic-bezier(.16, 1, .3, 1) both;
     border-radius: 0;
-    clip-path: none;
     height: 100dvh;
     min-height: 100vh;
     padding: 104px var(--gutter) 20px;
+    transform-origin: top right;
+    will-change: clip-path;
     width: 100%;
   }
 
   .menu-popover.is-closing .menu-panel {
-    animation: mobileMenuOut 520ms cubic-bezier(.16, 1, .3, 1) both;
+    animation: mobileMenuOut 640ms cubic-bezier(.16, 1, .3, 1) both;
   }
 
   .menu-nav {
+    animation: menuPanelContentIn 520ms cubic-bezier(.16, 1, .3, 1) 220ms both;
     gap: 10px;
   }
 
@@ -2917,7 +2997,12 @@ textarea {
     line-height: 1.28;
   }
 
+  .menu-popover.is-closing .menu-nav {
+    animation: menuPanelContentOut 220ms ease both;
+  }
+
   .menu-cta {
+    animation: menuPanelContentIn 520ms cubic-bezier(.16, 1, .3, 1) 290ms both;
     left: var(--gutter);
     padding-top: 8px;
     right: var(--gutter);
@@ -2925,9 +3010,15 @@ textarea {
   }
 
   .menu-socials {
+    animation: menuPanelContentIn 520ms cubic-bezier(.16, 1, .3, 1) 360ms both;
     bottom: auto;
     left: var(--gutter);
     top: min(calc(48vh + 87px), 491px);
+  }
+
+  .menu-popover.is-closing .menu-cta,
+  .menu-popover.is-closing .menu-socials {
+    animation: menuPanelContentOut 220ms ease both;
   }
 
   .menu-social--linkedin {

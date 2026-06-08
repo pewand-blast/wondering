@@ -53,6 +53,7 @@ export function StatCycler({className, stats}: {className?: string; stats: StatI
   const [activeIndex, setActiveIndex] = useState(0)
   const [copyIndex, setCopyIndex] = useState(0)
   const [copyVisible, setCopyVisible] = useState(true)
+  const [copyEntering, setCopyEntering] = useState(false)
   const activeItem = items[activeIndex] || items[0]
   const copyItem = items[copyIndex] || activeItem
   const parsedTarget = parseStatNumber(activeItem?.number)
@@ -81,9 +82,11 @@ export function StatCycler({className, stats}: {className?: string; stats: StatI
 
         window.clearTimeout(swapCopyTimer.current)
         swapCopyTimer.current = window.setTimeout(() => {
+          setCopyEntering(true)
           setCopyIndex(nextIndex)
           window.requestAnimationFrame(() => {
             setCopyVisible(true)
+            window.setTimeout(() => setCopyEntering(false), copyFadeDuration)
           })
         }, copyFadeDuration * 0.55)
 
@@ -185,7 +188,7 @@ export function StatCycler({className, stats}: {className?: string; stats: StatI
             </span>
           ))}
         </p>
-        <p className={`stat-cycler__copy ${copyVisible ? 'is-visible' : 'is-hidden'}`} key={copyItem?._key || `${copyIndex}-${copyItem?.copy}`}>
+        <p className={`stat-cycler__copy ${copyVisible ? 'is-visible' : 'is-hidden'}${copyEntering ? ' is-entering' : ''}`} key={copyItem?._key || `${copyIndex}-${copyItem?.copy}`}>
           {copyLines.map((line, index) => (
             <span className="stat-cycler__line-mask" key={`${line}-${index}`}>
               <span className="stat-cycler__line" style={{'--line-index': index} as CSSProperties}>

@@ -36,11 +36,14 @@ export function HeadlineCycler({lines}: HeadlineCyclerProps) {
 
   return (
     <h1 className="headline-cycler">
-      {cleanedLines.map((line, index) => (
-        <span className={index === activeIndex ? 'is-active' : index === previousIndex ? 'was-active' : ''} key={`${line}-${index}`}>
-          {line}
+      {previousIndex !== null && (
+        <span className="was-active" key={`previous-${previousIndex}-${cleanedLines[previousIndex]}`}>
+          {cleanedLines[previousIndex]}
         </span>
-      ))}
+      )}
+      <span className="is-active" key={`active-${activeIndex}-${cleanedLines[activeIndex]}`}>
+        {cleanedLines[activeIndex]}
+      </span>
     </h1>
   )
 }
