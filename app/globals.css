@@ -3206,7 +3206,12 @@ textarea {
 
 @media (max-width: 980px) {
   .topbar--full-logo .logo {
-    width: min(320px, calc(100vw - 120px));
+    height: min(46px, calc((100vw - 120px) * 46 / 440));
+    width: min(440px, calc(100vw - 120px));
+  }
+
+  .footer-logo {
+    max-width: calc(100vw - (var(--gutter) * 2));
   }
 
   .figma-home-hero {
@@ -3217,6 +3222,23 @@ textarea {
   .figma-home-impact,
   .figma-home-contact {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .figma-home-contact h2,
+  .figma-home-contact__left,
+  .figma-home-contact__right,
+  .figma-home-contact h3,
+  .figma-home-contact__logos {
+    grid-column: 1 / -1;
+  }
+
+  .figma-home-contact__left,
+  .figma-home-contact__right {
+    grid-row: auto;
+  }
+
+  .figma-home-contact__right {
+    top: auto;
   }
 
   .cinema-page {
