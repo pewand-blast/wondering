@@ -232,7 +232,7 @@ function animateReveal(element: HTMLElement) {
 
     const isHeading = element.classList.contains('scroll-reveal--heading')
     const fromY = isHeading ? 18 : 24
-    const stagger = isHeading ? 70 : 100
+    const stagger = isHeading ? 70 : 55
     const ease = isHeading ? power4Out : expoOut
     const lines = Array.from(element.querySelectorAll<HTMLElement>('.scroll-reveal-line'))
 
@@ -249,6 +249,12 @@ function animateReveal(element: HTMLElement) {
         },
       }))
     })
+
+    window.setTimeout(() => {
+      if (element.dataset.revealAnimated === 'true') {
+        setLineFinalState(element)
+      }
+    }, baseDelay + (lines.length * stagger) + 1680)
   } else {
     const fromY = 16
 

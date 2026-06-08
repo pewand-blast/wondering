@@ -68,6 +68,10 @@ function CinemaFilmTile({film, index}: {film: any; index: number}) {
         <span>{film?.title || 'Untitled film'}</span>
         <span>{film?.client || 'Client'}</span>
       </span>
+      <span aria-hidden="true" className="figma-home-film-card__mobile-arrow">
+        <span className="inline-arrow-link__arrow inline-arrow-link__arrow--current">→</span>
+        <span className="inline-arrow-link__arrow inline-arrow-link__arrow--incoming">→</span>
+      </span>
       <span className="figma-home-film-card__summary">{filmDescription(film)}</span>
       <span className="figma-home-film-card__categories">{filmCategories(film) || 'Category'}</span>
     </Link>

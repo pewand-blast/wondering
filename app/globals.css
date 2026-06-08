@@ -441,12 +441,13 @@ textarea {
 
 .inline-arrow-link__mask {
   display: inline-block;
-  height: 1em;
-  line-height: 1;
+  font-size: 12px;
+  height: 12px;
+  line-height: 12px;
   overflow: hidden;
   position: relative;
-  top: calc(.08em + 1px);
-  width: .72em;
+  top: 1px;
+  width: 12px;
 }
 
 .inline-arrow-link__arrow {
@@ -454,7 +455,7 @@ textarea {
   position: absolute;
   top: 0;
   transform: translateX(0);
-  width: 100%;
+  width: 12px;
 }
 
 .inline-arrow-link__arrow--incoming {
@@ -609,7 +610,7 @@ textarea {
 
 @keyframes mobileMenuIn {
   from {
-    clip-path: inset(20px 20px calc(100% - 60px) calc(100% - 60px) round var(--radius));
+    clip-path: inset(20px 20px calc(100% - 52px) calc(100% - 52px) round calc(var(--radius) * .8));
   }
 
   to {
@@ -623,7 +624,7 @@ textarea {
   }
 
   to {
-    clip-path: inset(20px 20px calc(100% - 60px) calc(100% - 60px) round var(--radius));
+    clip-path: inset(20px 20px calc(100% - 52px) calc(100% - 52px) round calc(var(--radius) * .8));
   }
 }
 
@@ -1274,6 +1275,10 @@ textarea {
   font-weight: 300;
 }
 
+.figma-home-film-card__mobile-arrow {
+  display: none;
+}
+
 .figma-home-film-card__summary,
 .figma-home-film-card__categories {
   font-size: 20px;
@@ -1565,9 +1570,10 @@ textarea {
 }
 
 .partner-logo-belt {
+  --logo-belt-gap: 72px;
   contain: layout paint;
   display: flex;
-  gap: 72px;
+  gap: var(--logo-belt-gap);
   overflow: hidden;
   width: 100%;
 }
@@ -1578,7 +1584,7 @@ textarea {
   animation-play-state: paused;
   display: flex;
   flex: 0 0 auto;
-  gap: 72px;
+  gap: var(--logo-belt-gap);
   min-width: max-content;
 }
 
@@ -1610,7 +1616,7 @@ textarea {
   }
 
   to {
-    transform: translateX(calc(-100% - 72px));
+    transform: translateX(calc(-100% - var(--logo-belt-gap)));
   }
 }
 
@@ -2934,35 +2940,37 @@ textarea {
 
   .menu-button {
     height: 40px;
+    transform: scale(.8);
+    transform-origin: top right;
     width: 40px;
   }
 
   .logo {
-    height: 40px;
-    width: 58px;
+    height: 32px;
+    width: 46px;
   }
 
   .topbar--full-logo .logo,
   .topbar--full-logo:not(.topbar--menu-open) .logo,
   .topbar--full-logo:not(.topbar--compact-logo):not(.topbar--menu-open) .logo {
-    height: 40px;
-    width: 58px;
+    height: 32px;
+    width: 46px;
   }
 
   .topbar--full-logo .logo-mark--full {
-    clip-path: inset(0 0 0 58px);
+    clip-path: inset(0 0 0 46px);
     display: block;
-    transform: translateY(-48px);
+    transform: translateY(-38px);
   }
 
   .topbar--full-logo:not(.topbar--menu-open) .logo-mark--full {
-    transform: translateY(-48px);
+    transform: translateY(-38px);
   }
 
   .topbar--full-logo .logo-mark--icon,
   .topbar--full-logo:not(.topbar--compact-logo) .logo-mark--icon {
     transform: none;
-    width: 58px;
+    width: 46px;
   }
 
   .menu-popover {
@@ -3052,20 +3060,20 @@ textarea {
   .topbar--menu-open .logo,
   .topbar--full-logo.topbar--menu-open .logo,
   .topbar--full-logo.topbar--menu-open.topbar--compact-logo .logo {
-    height: 40px;
-    width: min(383px, calc(100vw - 92px));
+    height: 32px;
+    width: min(306px, calc(100vw - 92px));
   }
 
   .topbar--menu-open .logo-mark--full,
   .topbar--full-logo.topbar--menu-open .logo-mark--full {
-    clip-path: inset(0 0 0 58px);
+    clip-path: inset(0 0 0 46px);
     display: block;
     transform: translateY(0);
   }
 
   .topbar--menu-open .logo-mark--icon {
     display: block;
-    width: 58px;
+    width: 46px;
   }
 
   .topbar--menu-open .menu-button {
@@ -3515,6 +3523,14 @@ textarea {
     margin-top: 40px;
   }
 
+  .partner-logo-belt {
+    --logo-belt-gap: 57.6px;
+  }
+
+  .partner-logo-belt__item {
+    width: 152px;
+  }
+
   .contact-testimonials__grid {
     margin-top: 40px;
   }
@@ -3583,6 +3599,53 @@ textarea {
     font-size: 32px;
   }
 
+  .button-link,
+  .figma-home-button {
+    font-size: 12.8px;
+  }
+
+  .button-link:hover .button-link__text,
+  .figma-home-button:hover .figma-home-button__text {
+    transform: none;
+  }
+
+  .button-link:hover .button-link__icon-bg,
+  .figma-home-button:hover .figma-home-button__icon-bg {
+    background: var(--button-icon-bg);
+    transform: none;
+  }
+
+  .button-link:hover .button-link__arrow,
+  .figma-home-button:hover .figma-home-button__arrow {
+    transform: none;
+  }
+
+  .button-link:hover .button-link__hover-bg,
+  .figma-home-button:hover .figma-home-button__hover-bg {
+    transform: translateY(175%) rotate(15deg);
+  }
+
+  .button-link:active .button-link__text,
+  .figma-home-button:active .figma-home-button__text {
+    transform: translateY(calc(-1 * var(--button-duplicate-distance)));
+  }
+
+  .button-link:active .button-link__icon-bg,
+  .figma-home-button:active .figma-home-button__icon-bg {
+    background: var(--button-icon-hover-bg);
+    transform: rotate(90deg);
+  }
+
+  .button-link:active .button-link__arrow,
+  .figma-home-button:active .figma-home-button__arrow {
+    transform: translateX(200%);
+  }
+
+  .button-link:active .button-link__hover-bg,
+  .figma-home-button:active .figma-home-button__hover-bg {
+    transform: translateY(0) rotate(0deg);
+  }
+
   .figma-home-about,
   .figma-home-films,
   .figma-home-impact,
@@ -3642,16 +3705,16 @@ textarea {
   }
 
   .figma-home-film-card__top {
-    display: flex;
+    display: grid;
     font-size: 18px;
-    gap: 20px;
+    gap: 4px;
     grid-column: 1;
     grid-row: 2;
-    justify-content: space-between;
     left: auto;
     line-height: 1.2;
     opacity: 1;
-    padding-top: 12px;
+    padding-right: 52px;
+    padding-top: 14px;
     position: relative;
     top: auto;
     transform: none;
@@ -3661,7 +3724,48 @@ textarea {
   .cinema-film-tile .figma-home-film-card__top span + span {
     font-size: 18px;
     font-weight: 300;
-    text-align: right;
+    text-align: left;
+  }
+
+  .figma-home-film-card__mobile-arrow {
+    align-self: start;
+    display: block;
+    grid-column: 1;
+    grid-row: 2;
+    font-size: 12px;
+    height: 12px;
+    justify-self: end;
+    line-height: 12px;
+    margin-top: 14px;
+    overflow: hidden;
+    position: relative;
+    width: 12px;
+  }
+
+  .figma-home-film-card__mobile-arrow .inline-arrow-link__arrow {
+    color: currentColor;
+    display: block;
+    font-size: 0;
+    height: 12px;
+    transition: transform 525ms cubic-bezier(.625, .05, 0, 1);
+    width: 12px;
+  }
+
+  .figma-home-film-card__mobile-arrow .inline-arrow-link__arrow::before {
+    background: currentColor;
+    clip-path: polygon(0 43.94%, 75.76% 43.94%, 40.24% 8.96%, 50% 0, 100% 50%, 50% 100%, 40.24% 91.04%, 75.76% 56.06%, 0 56.06%);
+    content: '';
+    display: block;
+    height: 12px;
+    width: 12px;
+  }
+
+  .figma-home-film-card:active .inline-arrow-link__arrow--current {
+    transform: translateX(120%);
+  }
+
+  .figma-home-film-card:active .inline-arrow-link__arrow--incoming {
+    transform: translateX(0);
   }
 
   .figma-home-film-card__rule {
@@ -3747,24 +3851,24 @@ textarea {
   .topbar--full-logo .logo,
   .topbar--full-logo:not(.topbar--menu-open) .logo,
   .topbar--full-logo:not(.topbar--compact-logo):not(.topbar--menu-open) .logo {
-    height: 40px;
-    width: 58px;
+    height: 32px;
+    width: 46px;
   }
 
   .topbar--full-logo .logo-mark--full {
-    clip-path: inset(0 0 0 58px);
+    clip-path: inset(0 0 0 46px);
     display: block;
-    transform: translateY(-48px);
+    transform: translateY(-38px);
   }
 
   .topbar--full-logo:not(.topbar--menu-open) .logo-mark--full {
-    transform: translateY(-48px);
+    transform: translateY(-38px);
   }
 
   .topbar--full-logo .logo-mark--icon,
   .topbar--full-logo:not(.topbar--compact-logo) .logo-mark--icon {
     transform: none;
-    width: 58px;
+    width: 46px;
   }
 
   .topbar--full-logo.topbar--menu-open .logo-mark--full {
