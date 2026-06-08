@@ -2958,7 +2958,7 @@ textarea {
   }
 
   .topbar--full-logo .logo-mark--full {
-    clip-path: inset(0 0 0 44.16px);
+    clip-path: inset(0 0 0 42.16px);
     display: block;
     transform: translateY(-36.48px);
   }
@@ -3066,7 +3066,7 @@ textarea {
 
   .topbar--menu-open .logo-mark--full,
   .topbar--full-logo.topbar--menu-open .logo-mark--full {
-    clip-path: inset(0 0 0 44.16px);
+    clip-path: inset(0 0 0 42.16px);
     display: block;
     transform: translateY(0);
   }
@@ -3856,7 +3856,7 @@ textarea {
   }
 
   .topbar--full-logo .logo-mark--full {
-    clip-path: inset(0 0 0 44.16px);
+    clip-path: inset(0 0 0 42.16px);
     display: block;
     transform: translateY(-36.48px);
   }
