@@ -10,12 +10,14 @@ const revealSelector = [
   'main h2',
   'main h3',
   'main p',
+  'main blockquote',
   'main .figma-home-button',
   'main .button-link',
+  'main .film-detail-credit__names span',
   '.site-footer > *',
 ].join(',')
 
-const textSelector = 'h1,h2,h3,p'
+const textSelector = 'h1,h2,h3,p,blockquote'
 const activeAnimations = new WeakMap<HTMLElement, number[]>()
 
 function escapeHtml(value: string) {
@@ -226,6 +228,7 @@ function animateReveal(element: HTMLElement) {
         }))
       })
 
+      element.classList.add('is-revealed')
       activeAnimations.set(element, frames)
       return
     }
@@ -260,6 +263,7 @@ function animateReveal(element: HTMLElement) {
 
     element.style.opacity = '0'
     element.style.transform = `translate3d(0, ${fromY}px, 0)`
+    element.classList.add('is-revealed')
     frames.push(animateValue({
       delay: baseDelay,
       duration: 1100,
@@ -269,6 +273,10 @@ function animateReveal(element: HTMLElement) {
         element.style.transform = `translate3d(0, ${(1 - progress) * fromY}px, 0)`
       },
     }))
+  }
+
+  if (!element.classList.contains('is-revealed')) {
+    element.classList.add('is-revealed')
   }
 
   activeAnimations.set(element, frames)
@@ -349,10 +357,12 @@ export function ScrollReveal() {
     }
 
     window.addEventListener('resize', handleResize)
+    window.visualViewport?.addEventListener('resize', handleResize)
 
     return () => {
       window.cancelAnimationFrame(resizeFrame)
       window.removeEventListener('resize', handleResize)
+      window.visualViewport?.removeEventListener('resize', handleResize)
       revealElements.forEach(cancelElementAnimations)
       observer.disconnect()
     }

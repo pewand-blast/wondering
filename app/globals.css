@@ -2939,7 +2939,11 @@ textarea {
   }
 
   .menu-button {
+    aspect-ratio: 1;
+    flex: 0 0 40px;
     height: 40px;
+    min-height: 40px;
+    min-width: 40px;
     transform: scale(.768);
     transform-origin: top right;
     width: 40px;
@@ -2958,7 +2962,7 @@ textarea {
   }
 
   .topbar--full-logo .logo-mark--full {
-    clip-path: inset(0 0 0 42.16px);
+    clip-path: inset(0 0 0 44.16px);
     display: block;
     transform: translateY(-36.48px);
   }
@@ -3066,13 +3070,14 @@ textarea {
 
   .topbar--menu-open .logo-mark--full,
   .topbar--full-logo.topbar--menu-open .logo-mark--full {
-    clip-path: inset(0 0 0 42.16px);
+    clip-path: inset(0 0 0 0);
     display: block;
     transform: translateY(0);
   }
 
   .topbar--menu-open .logo-mark--icon {
     display: block;
+    opacity: 0;
     width: 44.16px;
   }
 
@@ -3155,7 +3160,8 @@ textarea {
   }
 
   .film-detail-logos {
-    grid-template-columns: 1fr;
+    gap: 28px 20px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .case-preview:nth-child(even) .case-preview__image {
@@ -3709,7 +3715,7 @@ textarea {
     font-size: 18px;
     gap: 4px;
     grid-column: 1;
-    grid-row: 2;
+    grid-row: 3;
     left: auto;
     line-height: 1.2;
     opacity: 1;
@@ -3731,7 +3737,7 @@ textarea {
     align-self: start;
     display: block;
     grid-column: 1;
-    grid-row: 2;
+    grid-row: 3;
     font-size: 12px;
     height: 12px;
     justify-self: end;
@@ -3771,9 +3777,9 @@ textarea {
   .figma-home-film-card__rule {
     border-top-color: currentColor;
     grid-column: 1;
-    grid-row: 3;
+    grid-row: 2;
     left: auto;
-    margin-top: 10px;
+    margin-top: 20px;
     opacity: 1;
     position: relative;
     right: auto;
@@ -3801,6 +3807,7 @@ textarea {
 
   .figma-home-film-card__categories {
     bottom: auto;
+    font-size: 16px;
     grid-column: 1;
     grid-row: 5;
     margin-top: 16px;
@@ -3856,7 +3863,7 @@ textarea {
   }
 
   .topbar--full-logo .logo-mark--full {
-    clip-path: inset(0 0 0 42.16px);
+    clip-path: inset(0 0 0 44.16px);
     display: block;
     transform: translateY(-36.48px);
   }
@@ -3872,6 +3879,7 @@ textarea {
   }
 
   .topbar--full-logo.topbar--menu-open .logo-mark--full {
+    clip-path: inset(0 0 0 0);
     transform: translateY(0);
   }
 
@@ -3881,6 +3889,14 @@ textarea {
 
   .film-detail-credits,
   .film-detail-logos {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .film-detail-credits {
     grid-template-columns: 1fr;
+  }
+
+  .film-detail-logos {
+    gap: 28px 20px;
   }
 }
