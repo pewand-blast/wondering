@@ -197,7 +197,7 @@ export default async function Home() {
               {data.contactRightParagraph ||
                 'We work with organisations, charities, and communities to create films and campaigns that make a difference. If you’re exploring an idea or want to collaborate, we’d love to hear from you.'}
             </p>
-            <ArrowButton href={data.contactCta?.href || '/contact'} label={data.contactCta?.label || 'Start a conversation'} variant="on-white" />
+            <ArrowButton href={data.contactCta?.href || '/contact#form'} label={data.contactCta?.label || 'Start a conversation'} variant="on-white" />
           </div>
           <h3>{data.partnersHeading || 'Our partners'}</h3>
           <HomePartnerLogos logos={data.partnerLogos} />

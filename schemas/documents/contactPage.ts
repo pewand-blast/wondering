@@ -43,6 +43,50 @@ export const contactPage = defineType({
       type: 'styledText',
     }),
     defineField({
+      name: 'contactForm',
+      title: 'Contact form',
+      type: 'object',
+      description: 'Form labels and the email address that will receive submissions.',
+      fields: [
+        defineField({
+          name: 'recipientEmail',
+          title: 'Recipient email',
+          type: 'email',
+          description: 'Contact form submissions will be sent to this address.',
+        }),
+        defineField({
+          name: 'nameLabel',
+          title: 'Name field label',
+          type: 'string',
+          initialValue: 'Name',
+        }),
+        defineField({
+          name: 'emailLabel',
+          title: 'Email field label',
+          type: 'string',
+          initialValue: 'Email',
+        }),
+        defineField({
+          name: 'phoneLabel',
+          title: 'Phone field label',
+          type: 'string',
+          initialValue: 'Phone',
+        }),
+        defineField({
+          name: 'messageLabel',
+          title: 'Message field label',
+          type: 'string',
+          initialValue: 'Message',
+        }),
+        defineField({
+          name: 'submitLabel',
+          title: 'Submit button label',
+          type: 'string',
+          initialValue: 'Send message',
+        }),
+      ],
+    }),
+    defineField({
       name: 'partnersHeading',
       title: 'Partners heading',
       type: 'string',

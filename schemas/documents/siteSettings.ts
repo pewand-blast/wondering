@@ -50,7 +50,7 @@ export const siteSettings = defineType({
       name: 'cta',
       title: 'CTA link',
       type: 'callToAction',
-      initialValue: {label: 'Let’s talk', href: '/contact'},
+      initialValue: {label: 'Let’s talk', href: '/contact#form'},
     }),
     defineField({
       name: 'footerContact',

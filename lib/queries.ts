@@ -1,5 +1,7 @@
 export const settingsQuery = `*[_type == "siteSettings"][0]`
 
+export const contactFormQuery = `*[_type == "contactPage"][0].contactForm`
+
 export const homeQuery = `*[_type == "homePage"][0]{
   heroVideoUrl,
   heroVideoSource,

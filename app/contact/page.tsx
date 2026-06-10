@@ -171,7 +171,7 @@ export default async function ContactPage() {
             <div className="contact-intro__body">
               <TextLines text={introBody} />
             </div>
-            <ButtonLink cta={page?.introCta || {label: 'Start a conversation', href: '#form'}} />
+            <ButtonLink cta={page?.introCta || {label: 'Start a conversation', href: '/contact#form'}} />
           </div>
 
           <div className="contact-intro__column">

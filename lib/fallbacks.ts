@@ -36,7 +36,7 @@ export const fallbackSettings = {
     {label: 'Contact us', href: '/contact'},
   ],
   ctaEyebrow: 'Have a story to tell?',
-  cta: {label: 'Let’s talk', href: '/contact'},
+  cta: {label: 'Let’s talk', href: '/contact#form'},
   footerContact: [] as unknown[],
   footerAddress: '',
   email: 'contact@wondering.com',
