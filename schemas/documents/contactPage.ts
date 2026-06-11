@@ -7,40 +7,43 @@ export const contactPage = defineType({
   fields: [
     defineField({
       name: 'introHeading',
-      title: 'Intro heading',
+      title: 'Heading',
       type: 'string',
       initialValue: 'Partner with us',
     }),
     defineField({
       name: 'introBody',
-      title: 'Intro body',
-      type: 'text',
-      rows: 4,
-      initialValue:
-        'We work with organisations, charities, and communities to create films and campaigns that make a difference. If you’re exploring an idea or looking to collaborate, we’d love to hear from you.',
+      title: 'Body',
+      type: 'styledText',
     }),
     defineField({
       name: 'introCta',
-      title: 'Intro CTA',
+      title: 'CTA',
       type: 'callToAction',
     }),
     defineField({
       name: 'contactHeading',
-      title: 'Contact heading',
+      title: 'Heading',
       type: 'string',
       initialValue: 'Contact',
     }),
     defineField({
       name: 'contactParagraph',
-      title: 'Contact paragraph (legacy)',
+      title: 'Paragraph (legacy)',
       type: 'text',
       rows: 4,
       hidden: true,
     }),
     defineField({
       name: 'contactParagraphRich',
-      title: 'Contact paragraph',
+      title: 'Paragraph',
       type: 'styledText',
+    }),
+    defineField({
+      name: 'applyCta',
+      title: 'CTA',
+      type: 'callToAction',
+      initialValue: {label: 'Apply here', href: '/apply'},
     }),
     defineField({
       name: 'contactForm',
@@ -88,19 +91,19 @@ export const contactPage = defineType({
     }),
     defineField({
       name: 'partnersHeading',
-      title: 'Partners heading',
+      title: 'Heading',
       type: 'string',
       initialValue: 'Our partners',
     }),
     defineField({
       name: 'partners',
-      title: 'Partner logos',
+      title: 'Logos',
       type: 'array',
       of: [{type: 'logoItem'}],
     }),
     defineField({
       name: 'testimonialsHeading',
-      title: 'Testimonials heading',
+      title: 'Heading',
       type: 'string',
       initialValue: 'Testimonials',
     }),

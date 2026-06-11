@@ -7,13 +7,13 @@ export const aboutPage = defineType({
   fields: [
     defineField({
       name: 'introHeading',
-      title: 'Intro heading',
+      title: 'Heading',
       type: 'string',
       initialValue: 'Who we are',
     }),
     defineField({
       name: 'introBody',
-      title: 'Intro body',
+      title: 'Body',
       type: 'text',
       rows: 5,
       initialValue:
@@ -21,7 +21,7 @@ export const aboutPage = defineType({
     }),
     defineField({
       name: 'sectionsHeading',
-      title: 'Sections heading',
+      title: 'Heading',
       type: 'string',
       initialValue: 'What we do',
     }),
@@ -33,7 +33,7 @@ export const aboutPage = defineType({
     }),
     defineField({
       name: 'teamHeading',
-      title: 'Team heading',
+      title: 'Heading',
       type: 'string',
       initialValue: 'The team',
     }),

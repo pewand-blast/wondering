@@ -7,13 +7,13 @@ export const missionImpactPage = defineType({
   fields: [
     defineField({
       name: 'missionHeading',
-      title: 'Mission heading',
+      title: 'Heading',
       type: 'string',
       initialValue: 'Mission',
     }),
     defineField({
       name: 'missionBody',
-      title: 'Mission body',
+      title: 'Body',
       type: 'text',
       rows: 4,
       initialValue:
@@ -21,13 +21,13 @@ export const missionImpactPage = defineType({
     }),
     defineField({
       name: 'impactHeading',
-      title: 'Impact heading',
+      title: 'Heading',
       type: 'string',
       initialValue: 'Impact',
     }),
     defineField({
       name: 'impactFirstParagraph',
-      title: 'Impact first paragraph',
+      title: 'First paragraph',
       type: 'text',
       rows: 4,
       description: 'Standalone paragraph shown before the numbered stat copy.',
@@ -41,7 +41,7 @@ export const missionImpactPage = defineType({
     }),
     defineField({
       name: 'caseStudiesHeading',
-      title: 'Case studies heading',
+      title: 'Heading',
       type: 'string',
       initialValue: 'Case studies',
     }),

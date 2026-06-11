@@ -2,17 +2,19 @@ import Link from 'next/link'
 import {ButtonLink} from '@/components/ButtonLink'
 import {PageShell} from '@/components/PageShell'
 import {PartnerLogoBelt, type PartnerLogoBeltItem} from '@/components/PartnerLogoBelt'
+import {RichText} from '@/components/RichText'
 import {SanityImage} from '@/components/SanityImage'
 import {contactQuery} from '@/lib/queries'
 import {fetchSanity, urlFor} from '@/lib/sanity'
 
 type ContactPageData = {
   introHeading?: string
-  introBody?: string
+  introBody?: unknown
   introCta?: {label?: string; href?: string}
   contactHeading?: string
   contactParagraph?: string
-  contactParagraphRich?: RichTextBlock[]
+  contactParagraphRich?: unknown
+  applyCta?: {label?: string; href?: string}
   partnersHeading?: string
   partners?: {logo?: unknown; _key?: string}[]
   testimonialsHeading?: string
@@ -23,19 +25,6 @@ type ContactPageData = {
     role?: string
     quote?: string
   }[]
-}
-
-type RichTextChild = {
-  _key?: string
-  text?: string
-  marks?: string[]
-}
-
-type RichTextBlock = {
-  _key?: string
-  _type?: string
-  children?: RichTextChild[]
-  markDefs?: {_key?: string; _type?: string; href?: string}[]
 }
 
 const fallbackPartnerLogos: PartnerLogoBeltItem[] = Array.from({length: 8}, (_, index) => ({
@@ -97,37 +86,6 @@ function renderLinkedText(text: string) {
   })
 }
 
-function RichText({blocks}: {blocks?: RichTextBlock[]}) {
-  if (!blocks?.length) return null
-
-  return (
-    <>
-      {blocks.map((block) => {
-        const markDefs = block.markDefs || []
-
-        return (
-          <p key={block._key}>
-            {(block.children || []).map((child, index) => {
-              const linkMark = child.marks?.map((mark) => markDefs.find((definition) => definition._key === mark && definition._type === 'link')).find(Boolean)
-              const content = child.text || ''
-
-              if (linkMark?.href) {
-                return (
-                  <Link href={linkMark.href} key={child._key || `${content}-${index}`}>
-                    {content}
-                  </Link>
-                )
-              }
-
-              return <span key={child._key || `${content}-${index}`}>{content}</span>
-            })}
-          </p>
-        )
-      })}
-    </>
-  )
-}
-
 function ContactPartnerLogos({logos}: {logos?: ContactPageData['partners']}) {
   const items: PartnerLogoBeltItem[] = logos?.length
     ? logos.map((item, index) => ({
@@ -155,8 +113,7 @@ export default async function ContactPage() {
         fallbackImage: fallbackTestimonials[index % fallbackTestimonials.length].fallbackImage,
       }))
     : fallbackTestimonials
-  const introBody =
-    page?.introBody ||
+  const introBodyFallback =
     'We work with organisations, charities, and communities to create films and campaigns that make a difference.\nIf you are exploring an idea or looking to collaborate, we would love to hear from you.'
   const contactParagraph =
     page?.contactParagraph ||
@@ -168,17 +125,20 @@ export default async function ContactPage() {
         <section className="contact-intro">
           <div className="contact-intro__column">
             <h1>{page?.introHeading || 'Partner with us'}</h1>
-            <div className="contact-intro__body">
-              <TextLines text={introBody} />
-            </div>
+            <RichText className="contact-intro__body" fallback={introBodyFallback} value={page?.introBody} />
             <ButtonLink cta={page?.introCta || {label: 'Start a conversation', href: '/contact#form'}} />
           </div>
 
           <div className="contact-intro__column">
             <h2>{page?.contactHeading || 'Contact'}</h2>
             <div className="contact-intro__body contact-intro__body--contact">
-              {page?.contactParagraphRich?.length ? <RichText blocks={page.contactParagraphRich} /> : <TextLines text={contactParagraph} />}
+              {Array.isArray(page?.contactParagraphRich) && page.contactParagraphRich.length ? (
+                <RichText value={page.contactParagraphRich} />
+              ) : (
+                <TextLines text={contactParagraph} />
+              )}
             </div>
+            <ButtonLink cta={page?.applyCta || {label: 'Apply here', href: '/apply'}} />
           </div>
         </section>
 
