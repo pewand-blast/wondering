@@ -1,6 +1,6 @@
 'use client'
 
-import {useState, type FormEvent} from 'react'
+import {useId, useRef, useState} from 'react'
 
 type ContactFormLabels = {
   recipientEmail?: string
@@ -14,41 +14,37 @@ type ContactFormLabels = {
 export function ContactForm({labels}: {labels?: ContactFormLabels | null}) {
   const recipientEmail = labels?.recipientEmail || 'contact@wondering.com'
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle')
-  const [message, setMessage] = useState('')
+  const iframeName = useId().replace(/:/g, '')
+  const formRef = useRef<HTMLFormElement | null>(null)
+  const hasSubmitted = useRef(false)
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault()
-    const form = event.currentTarget
-    const formData = new FormData(form)
-    formData.set('_subject', 'Wondering contact form')
-    formData.set('_template', 'table')
-    formData.set('_captcha', 'false')
-    formData.set('_replyto', String(formData.get('email') || ''))
-
+  function handleSubmit() {
+    hasSubmitted.current = true
     setStatus('sending')
-    setMessage('')
+  }
 
-    try {
-      const response = await fetch(`https://formsubmit.co/ajax/${encodeURIComponent(recipientEmail)}`, {
-        method: 'POST',
-        headers: {Accept: 'application/json'},
-        body: formData,
-      })
-      const result = await response.json().catch(() => null)
-
-      if (!response.ok || result?.success === 'false') {
-        throw new Error(typeof result?.message === 'string' ? result.message : 'Failed to submit form')
-      }
-      form.reset()
+  function handleIframeLoad() {
+    if (!hasSubmitted.current) return
+    hasSubmitted.current = false
+    formRef.current?.reset()
+    window.setTimeout(() => {
       setStatus('success')
-    } catch (error) {
-      setMessage(error instanceof Error ? error.message : '')
-      setStatus('error')
-    }
+    }, 300)
   }
 
   return (
-    <form className="contact-form" onSubmit={handleSubmit}>
+    <>
+    <form
+      action={`https://formsubmit.co/${encodeURIComponent(recipientEmail)}`}
+      className="contact-form"
+      method="POST"
+      onSubmit={handleSubmit}
+      ref={formRef}
+      target={iframeName}
+    >
+      <input name="_subject" type="hidden" value="Wondering contact form" />
+      <input name="_template" type="hidden" value="table" />
+      <input name="_captcha" type="hidden" value="false" />
       <label>
         <span>{labels?.nameLabel || 'Name'}</span>
         <input autoComplete="name" name="name" required type="text" />
@@ -65,24 +61,28 @@ export function ContactForm({labels}: {labels?: ContactFormLabels | null}) {
         <span>{labels?.messageLabel || 'Message'}</span>
         <textarea name="message" required rows={6} />
       </label>
-      <button className="contact-form__submit button-link small-copy" disabled={status === 'sending'} type="submit">
-        <span className="button-link__text-mask">
-          <span className="button-link__text">{status === 'sending' ? 'Sending' : labels?.submitLabel || 'Send message'}</span>
-        </span>
-        <span aria-hidden="true" className="button-link__icon">
-          <span className="button-link__icon-bg" />
-          <span className="button-link__icon-mask">
-            <span className="button-link__icon-track">
-              <span className="button-link__arrow" />
-              <span className="button-link__arrow" />
-              <span className="button-link__arrow" />
+      {status === 'success' ? (
+        <p className="contact-form__status">Form is submitted, thank you.</p>
+      ) : (
+        <button className="contact-form__submit button-link small-copy" disabled={status === 'sending'} type="submit">
+          <span className="button-link__text-mask">
+            <span className="button-link__text">{status === 'sending' ? 'Sending' : labels?.submitLabel || 'Send message'}</span>
+          </span>
+          <span aria-hidden="true" className="button-link__icon">
+            <span className="button-link__icon-bg" />
+            <span className="button-link__icon-mask">
+              <span className="button-link__icon-track">
+                <span className="button-link__arrow" />
+                <span className="button-link__arrow" />
+                <span className="button-link__arrow" />
+              </span>
             </span>
           </span>
-        </span>
-        <span aria-hidden="true" className="button-link__hover-bg" />
-      </button>
-      {status === 'success' ? <p className="contact-form__status">Thanks, your message has been sent.</p> : null}
-      {status === 'error' ? <p className="contact-form__status">{message || 'Something went wrong. Please try again.'}</p> : null}
+          <span aria-hidden="true" className="button-link__hover-bg" />
+        </button>
+      )}
     </form>
+    <iframe aria-hidden="true" name={iframeName} onLoad={handleIframeLoad} style={{display: 'none'}} title="" />
+    </>
   )
 }
