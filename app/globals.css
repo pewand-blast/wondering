@@ -2632,6 +2632,18 @@ textarea {
   color: var(--contact-modal-accent);
 }
 
+.contact-form__submit:disabled {
+  cursor: progress;
+}
+
+.contact-form__status {
+  font-size: 16px;
+  font-weight: 300;
+  grid-column: 1 / -1;
+  line-height: 1.2;
+  margin: 0;
+}
+
 .contact-modal-open {
   height: 100%;
   overflow: hidden;
