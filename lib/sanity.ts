@@ -8,7 +8,7 @@ export const client = createClient({
   projectId,
   dataset,
   apiVersion: '2026-06-01',
-  useCdn: false,
+  useCdn: true,
 })
 
 const builder = createImageUrlBuilder(client)
@@ -17,9 +17,13 @@ export function urlFor(source: unknown) {
   return builder.image(source as never)
 }
 
-export async function fetchSanity<T>(query: string, params: Record<string, unknown> = {}) {
+export async function fetchSanity<T>(
+  query: string,
+  params: Record<string, unknown> = {},
+  revalidate = 60,
+) {
   try {
-    return await client.fetch<T>(query, params, {cache: 'no-store'})
+    return await client.fetch<T>(query, params, {next: {revalidate}})
   } catch (error) {
     console.error(error)
     return null

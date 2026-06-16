@@ -8,7 +8,7 @@
     "dev:3001": "next dev --port 3001",
     "studio": "sanity dev --host 0.0.0.0",
     "dev:3334": "sanity dev --host 0.0.0.0 --port 3334",
-    "build": "next build",
+    "build": "NEXT_TELEMETRY_DISABLED=1 next build",
     "build:studio": "sanity build",
     "deploy": "sanity deploy"
   },

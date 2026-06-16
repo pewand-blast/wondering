@@ -4,6 +4,12 @@ export const contactFormQuery = `*[_type == "contactPage"][0].contactForm`
 
 export const applicationFormQuery = `*[_type == "contactPage"][0].applyForm`
 
+export const shellQuery = `{
+  "settings": *[_type == "siteSettings"][0],
+  "contactForm": *[_type == "contactPage"][0].contactForm,
+  "applicationForm": *[_type == "contactPage"][0].applyForm
+}`
+
 export const homeQuery = `*[_type == "homePage"][0]{
   heroVideoUrl,
   heroVideoSource,

@@ -2,7 +2,13 @@ import {ContactFormModal} from './ContactFormModal'
 import {Footer} from './Footer'
 import {Header} from './Header'
 import {fetchSanity} from '@/lib/sanity'
-import {applicationFormQuery, contactFormQuery, settingsQuery} from '@/lib/queries'
+import {shellQuery} from '@/lib/queries'
+
+type ShellData = {
+  settings?: Record<string, unknown> | null
+  contactForm?: Record<string, string> | null
+  applicationForm?: Record<string, unknown> | null
+}
 
 export async function PageShell({
   children,
@@ -15,11 +21,10 @@ export async function PageShell({
   headerLogo?: 'compact' | 'full'
   headerAccent?: 'default' | 'red' | 'green' | 'brown'
 }) {
-  const [settings, contactForm, applicationForm] = await Promise.all([
-    fetchSanity<Record<string, unknown>>(settingsQuery),
-    fetchSanity<Record<string, string>>(contactFormQuery),
-    fetchSanity<Record<string, unknown>>(applicationFormQuery),
-  ])
+  const shell = await fetchSanity<ShellData>(shellQuery)
+  const settings = shell?.settings
+  const contactForm = shell?.contactForm
+  const applicationForm = shell?.applicationForm
 
   return (
     <div className={`site-shell ${headerAccent === 'red' ? 'site-shell--red' : ''} ${headerAccent === 'green' ? 'site-shell--green' : ''} ${headerAccent === 'brown' ? 'site-shell--brown' : ''}`}>
