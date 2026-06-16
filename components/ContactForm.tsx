@@ -33,9 +33,21 @@ export function ContactForm({labels}: {labels?: ContactFormLabels | null}) {
         <span>{labels?.messageLabel || 'Message'}</span>
         <textarea name="message" required rows={6} />
       </label>
-      <button className="contact-form__submit" type="submit">
-        <span>{labels?.submitLabel || 'Send message'}</span>
-        <span aria-hidden="true">→</span>
+      <button className="contact-form__submit button-link small-copy" type="submit">
+        <span className="button-link__text-mask">
+          <span className="button-link__text">{labels?.submitLabel || 'Send message'}</span>
+        </span>
+        <span aria-hidden="true" className="button-link__icon">
+          <span className="button-link__icon-bg" />
+          <span className="button-link__icon-mask">
+            <span className="button-link__icon-track">
+              <span className="button-link__arrow" />
+              <span className="button-link__arrow" />
+              <span className="button-link__arrow" />
+            </span>
+          </span>
+        </span>
+        <span aria-hidden="true" className="button-link__hover-bg" />
       </button>
     </form>
   )

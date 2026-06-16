@@ -2,7 +2,7 @@ import {ContactFormModal} from './ContactFormModal'
 import {Footer} from './Footer'
 import {Header} from './Header'
 import {fetchSanity} from '@/lib/sanity'
-import {contactFormQuery, settingsQuery} from '@/lib/queries'
+import {applicationFormQuery, contactFormQuery, settingsQuery} from '@/lib/queries'
 
 export async function PageShell({
   children,
@@ -15,9 +15,10 @@ export async function PageShell({
   headerLogo?: 'compact' | 'full'
   headerAccent?: 'default' | 'red' | 'green' | 'brown'
 }) {
-  const [settings, contactForm] = await Promise.all([
+  const [settings, contactForm, applicationForm] = await Promise.all([
     fetchSanity<Record<string, unknown>>(settingsQuery),
     fetchSanity<Record<string, string>>(contactFormQuery),
+    fetchSanity<Record<string, unknown>>(applicationFormQuery),
   ])
 
   return (
@@ -25,7 +26,7 @@ export async function PageShell({
       <Header tone={headerTone} logo={headerLogo} accent={headerAccent} settings={settings as never} />
       {children}
       <Footer accent={headerAccent} settings={settings as never} />
-      <ContactFormModal accent={headerAccent} labels={contactForm} />
+      <ContactFormModal accent={headerAccent} applicationLabels={applicationForm} labels={contactForm} />
     </div>
   )
 }

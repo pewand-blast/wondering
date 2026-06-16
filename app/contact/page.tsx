@@ -138,7 +138,7 @@ export default async function ContactPage() {
                 <TextLines text={contactParagraph} />
               )}
             </div>
-            <ButtonLink cta={page?.applyCta || {label: 'Apply here', href: '/apply'}} />
+            <ButtonLink cta={page?.applyCta || {label: 'Apply here', href: '#apply'}} />
           </div>
         </section>
 
