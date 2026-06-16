@@ -39,35 +39,41 @@ const applicationFields = [
   {_key: 'unavailableDates', _type: 'object', fieldId: 'unavailableDates', label: 'Are there any dates you cannot attend?', inputType: 'textarea', required: false, rows: 4},
 ]
 
-await client
-  .patch('contactPage')
-  .set({
-    applyCta: {
-      _type: 'callToAction',
-      label: 'Apply here',
-      href: '#apply',
-    },
-  })
-  .setIfMissing({
-    applyForm: {
-      _type: 'object',
-      heading: 'Online Application Form',
-      nameLabel: 'Name',
-      emailLabel: 'Email',
-      postcodeLabel: 'Postcode',
-      phoneLabel: 'Phone Number',
-      ageLabel: 'Age',
-      projectLabel: 'Which project are you applying for?',
-      projectOptions: ['SEL Mind (South East London // 18-30 age) - Therapeutic Filmmaking'],
-      madeFilmLabel: 'Have you made a film before?',
-      aboutLabel: 'Tell us something about yourself? Why do you want to join the project? (aim for 300 words)',
-      groupLabel: 'How do you feel about joining a group activity? Do you have any specific needs or access requirements?',
-      datesLabel: 'Are there any dates you cannot attend?',
-      submitLabel: 'Submit application',
-      fields: applicationFields,
-    },
-    'applyForm.fields': applicationFields,
-  })
-  .commit()
+const applyForm = {
+  _type: 'object',
+  heading: 'Online Application Form',
+  recipientEmail: 'pewand@blast.co.uk',
+  nameLabel: 'Name',
+  emailLabel: 'Email',
+  postcodeLabel: 'Postcode',
+  phoneLabel: 'Phone Number',
+  ageLabel: 'Age',
+  projectLabel: 'Which project are you applying for?',
+  projectOptions: ['SEL Mind (South East London // 18-30 age) - Therapeutic Filmmaking'],
+  madeFilmLabel: 'Have you made a film before?',
+  aboutLabel: 'Tell us something about yourself? Why do you want to join the project? (aim for 300 words)',
+  groupLabel: 'How do you feel about joining a group activity? Do you have any specific needs or access requirements?',
+  datesLabel: 'Are there any dates you cannot attend?',
+  submitLabel: 'Submit application',
+  fields: applicationFields,
+}
+
+const documents = await client.fetch<string[]>('*[_id in ["contactPage", "drafts.contactPage"]]._id')
+
+await Promise.all(
+  documents.map((id) => (
+    client
+      .patch(id)
+      .set({
+        applyCta: {
+          _type: 'callToAction',
+          label: 'Apply here',
+          href: '#apply',
+        },
+        applyForm,
+      })
+      .commit()
+  )),
+)
 
 console.log('Application form defaults added.')
