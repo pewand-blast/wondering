@@ -58,7 +58,7 @@ const applyForm = {
   fields: applicationFields,
 }
 
-const documents = await client.fetch<string[]>('*[_id in ["contactPage", "drafts.contactPage"]]._id')
+const documents = ['contactPage', 'drafts.contactPage']
 
 await Promise.all(
   documents.map((id) => (
