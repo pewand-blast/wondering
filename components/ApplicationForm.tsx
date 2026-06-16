@@ -78,30 +78,35 @@ function autoCompleteFor(fieldId?: string) {
 export function ApplicationForm({labels}: {labels?: ApplicationFormLabels | null}) {
   const recipientEmail = labels?.recipientEmail || 'contact@wondering.com'
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle')
+  const [message, setMessage] = useState('')
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
     const form = event.currentTarget
     const formData = new FormData(form)
-    const fields = Object.fromEntries(Array.from(formData.entries()).map(([key, value]) => [key, String(value)]))
+    formData.set('_subject', 'Wondering application form')
+    formData.set('_template', 'table')
+    formData.set('_captcha', 'false')
+    formData.set('_replyto', String(formData.get('email') || ''))
 
     setStatus('sending')
+    setMessage('')
 
     try {
-      const response = await fetch('/api/form-submit', {
+      const response = await fetch(`https://formsubmit.co/ajax/${encodeURIComponent(recipientEmail)}`, {
         method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({
-          formName: 'Wondering application form',
-          recipientEmail,
-          fields,
-        }),
+        headers: {Accept: 'application/json'},
+        body: formData,
       })
+      const result = await response.json().catch(() => null)
 
-      if (!response.ok) throw new Error('Failed to submit form')
+      if (!response.ok || result?.success === 'false') {
+        throw new Error(typeof result?.message === 'string' ? result.message : 'Failed to submit form')
+      }
       form.reset()
       setStatus('success')
-    } catch {
+    } catch (error) {
+      setMessage(error instanceof Error ? error.message : '')
       setStatus('error')
     }
   }
@@ -193,7 +198,7 @@ export function ApplicationForm({labels}: {labels?: ApplicationFormLabels | null
         <span aria-hidden="true" className="button-link__hover-bg" />
       </button>
       {status === 'success' ? <p className="contact-form__status">Thanks, your application has been sent.</p> : null}
-      {status === 'error' ? <p className="contact-form__status">Something went wrong. Please try again.</p> : null}
+      {status === 'error' ? <p className="contact-form__status">{message || 'Something went wrong. Please try again.'}</p> : null}
     </form>
   )
 }
