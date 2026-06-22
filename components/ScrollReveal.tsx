@@ -20,7 +20,10 @@ const revealSelector = [
 ].join(',')
 
 const textSelector = 'h1,h2,h3,p,blockquote,.figma-home-film-card__summary,.figma-home-film-card__categories'
-const activeAnimations = new WeakMap<HTMLElement, number[]>()
+const activeAnimations = new WeakMap<HTMLElement, {frames: number[]; timeouts: number[]}>()
+const power3Ease = 'cubic-bezier(.22, 1, .36, 1)'
+const power4Ease = 'cubic-bezier(.165, .84, .44, 1)'
+const expoEase = 'cubic-bezier(.19, 1, .22, 1)'
 
 function escapeHtml(value: string) {
   return value
@@ -136,23 +139,12 @@ function prepareRevealElement(element: HTMLElement) {
   }
 }
 
-function expoOut(progress: number) {
-  return progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress)
-}
-
-function power3Out(progress: number) {
-  return 1 - Math.pow(1 - progress, 3)
-}
-
-function power4Out(progress: number) {
-  return 1 - Math.pow(1 - progress, 4)
-}
-
 function cancelElementAnimations(element: HTMLElement) {
-  const frames = activeAnimations.get(element)
-  if (!frames) return
+  const animation = activeAnimations.get(element)
+  if (!animation) return
 
-  frames.forEach((frame) => window.cancelAnimationFrame(frame))
+  animation.frames.forEach((frame) => window.cancelAnimationFrame(frame))
+  animation.timeouts.forEach((timeout) => window.clearTimeout(timeout))
   activeAnimations.delete(element)
 }
 
@@ -161,45 +153,15 @@ function setLineFinalState(element: HTMLElement) {
   chars.forEach((char) => {
     char.style.opacity = '1'
     char.style.transform = 'translate3d(0, 0, 0)'
+    char.style.transition = 'none'
   })
 
   const lines = Array.from(element.querySelectorAll<HTMLElement>('.scroll-reveal-line'))
   lines.forEach((line) => {
     line.style.opacity = '1'
     line.style.transform = 'translate3d(0, 0, 0)'
+    line.style.transition = 'none'
   })
-}
-
-function animateValue({
-  delay = 0,
-  duration,
-  ease,
-  onUpdate,
-}: {
-  delay?: number
-  duration: number
-  ease: (progress: number) => number
-  onUpdate: (progress: number) => void
-}) {
-  let frame = 0
-  const start = window.performance.now() + delay
-
-  const tick = (now: number) => {
-    if (now < start) {
-      frame = window.requestAnimationFrame(tick)
-      return
-    }
-
-    const rawProgress = Math.min((now - start) / duration, 1)
-    onUpdate(ease(rawProgress))
-
-    if (rawProgress < 1) {
-      frame = window.requestAnimationFrame(tick)
-    }
-  }
-
-  frame = window.requestAnimationFrame(tick)
-  return frame
 }
 
 function animateReveal(element: HTMLElement) {
@@ -211,6 +173,7 @@ function animateReveal(element: HTMLElement) {
 
   const baseDelay = Number(element.style.getPropertyValue('--reveal-index') || 0) * 70
   const frames: number[] = []
+  const timeouts: number[] = []
 
   if (element.classList.contains('scroll-reveal--text')) {
     if (element.classList.contains('scroll-reveal--chars')) {
@@ -219,69 +182,81 @@ function animateReveal(element: HTMLElement) {
       chars.forEach((char, index) => {
         char.style.opacity = '0'
         char.style.transform = 'translate3d(-6px, 0, 0)'
-        frames.push(animateValue({
-          delay: baseDelay + (index * 18),
-          duration: 850,
-          ease: power3Out,
-          onUpdate: (progress) => {
-            char.style.opacity = String(progress)
-            char.style.transform = `translate3d(${(1 - progress) * -6}px, 0, 0)`
-          },
-        }))
+        char.style.transition = 'none'
       })
 
-      element.classList.add('is-revealed')
-      activeAnimations.set(element, frames)
+      frames.push(window.requestAnimationFrame(() => {
+        chars.forEach((char, index) => {
+          const delay = baseDelay + (index * 18)
+          char.style.transition = `opacity 850ms ${power3Ease} ${delay}ms, transform 850ms ${power3Ease} ${delay}ms`
+          char.style.opacity = '1'
+          char.style.transform = 'translate3d(0, 0, 0)'
+        })
+      }))
+
+      timeouts.push(window.setTimeout(() => {
+        if (element.dataset.revealAnimated === 'true') {
+          setLineFinalState(element)
+        }
+      }, baseDelay + (chars.length * 18) + 900))
+
+      activeAnimations.set(element, {frames, timeouts})
       return
     }
 
     const isHeading = element.classList.contains('scroll-reveal--heading')
     const fromY = isHeading ? 18 : 24
     const stagger = isHeading ? 70 : 55
-    const ease = isHeading ? power4Out : expoOut
+    const ease = isHeading ? power4Ease : expoEase
     const lines = Array.from(element.querySelectorAll<HTMLElement>('.scroll-reveal-line'))
 
     lines.forEach((line, index) => {
       line.style.opacity = '0'
       line.style.transform = `translate3d(0, ${fromY}px, 0)`
-      frames.push(animateValue({
-        delay: baseDelay + (index * stagger),
-        duration: 1600,
-        ease,
-        onUpdate: (progress) => {
-          line.style.opacity = String(progress)
-          line.style.transform = `translate3d(0, ${(1 - progress) * fromY}px, 0)`
-        },
-      }))
+      line.style.transition = 'none'
     })
 
-    window.setTimeout(() => {
+    frames.push(window.requestAnimationFrame(() => {
+      lines.forEach((line, index) => {
+        const delay = baseDelay + (index * stagger)
+        line.style.transition = `opacity 1600ms ${ease} ${delay}ms, transform 1600ms ${ease} ${delay}ms`
+        line.style.opacity = '1'
+        line.style.transform = 'translate3d(0, 0, 0)'
+      })
+    }))
+
+    timeouts.push(window.setTimeout(() => {
       if (element.dataset.revealAnimated === 'true') {
         setLineFinalState(element)
       }
-    }, baseDelay + (lines.length * stagger) + 1680)
+    }, baseDelay + (lines.length * stagger) + 1680))
   } else {
     const fromY = 16
 
     element.style.opacity = '0'
     element.style.transform = `translate3d(0, ${fromY}px, 0)`
-    element.classList.add('is-revealed')
-    frames.push(animateValue({
-      delay: baseDelay,
-      duration: 1100,
-      ease: power3Out,
-      onUpdate: (progress) => {
-        element.style.opacity = String(progress)
-        element.style.transform = `translate3d(0, ${(1 - progress) * fromY}px, 0)`
-      },
+    element.style.transition = 'none'
+
+    frames.push(window.requestAnimationFrame(() => {
+      element.style.transition = `opacity 1100ms ${power3Ease} ${baseDelay}ms, transform 1100ms ${power3Ease} ${baseDelay}ms`
+      element.style.opacity = '1'
+      element.style.transform = 'translate3d(0, 0, 0)'
     }))
+
+    timeouts.push(window.setTimeout(() => {
+      if (element.dataset.revealAnimated === 'true') {
+        element.style.opacity = '1'
+        element.style.transform = 'translate3d(0, 0, 0)'
+        element.style.transition = 'none'
+      }
+    }, baseDelay + 1160))
   }
 
   if (!element.classList.contains('is-revealed')) {
     element.classList.add('is-revealed')
   }
 
-  activeAnimations.set(element, frames)
+  activeAnimations.set(element, {frames, timeouts})
 }
 
 function isMediaElementOrWrapper(element: HTMLElement) {
