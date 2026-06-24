@@ -2269,6 +2269,7 @@ textarea {
 }
 
 .mission-case-card__image {
+  aspect-ratio: 16 / 9;
   border-radius: var(--radius);
   display: block;
   grid-column: 1 / 3;
@@ -2276,7 +2277,7 @@ textarea {
 }
 
 .mission-case-card__image img {
-  aspect-ratio: 670 / 389;
+  aspect-ratio: 16 / 9;
   height: 100%;
   object-fit: cover;
   width: 100%;
