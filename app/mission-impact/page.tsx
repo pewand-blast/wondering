@@ -111,7 +111,9 @@ export default async function MissionImpactPage() {
             {caseStudies.map((item: any, index: number) => (
               <article className="mission-case-card" key={`${item._id || item.slug?.current || 'case'}-${index}`}>
                 <div className="mission-case-card__image">
-                  <CaseStudyImage image={item.missionSection?.heroImage} />
+                  <div className="mission-case-card__image-crop">
+                    <CaseStudyImage image={item.missionSection?.heroImage} />
+                  </div>
                 </div>
                 <div className="mission-case-card__content">
                   <h3>{item.missionSection?.header || 'Title'}</h3>
