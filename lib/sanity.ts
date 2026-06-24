@@ -8,7 +8,7 @@ export const client = createClient({
   projectId,
   dataset,
   apiVersion: '2026-06-01',
-  useCdn: true,
+  useCdn: false,
 })
 
 const builder = createImageUrlBuilder(client)
@@ -20,7 +20,7 @@ export function urlFor(source: unknown) {
 export async function fetchSanity<T>(
   query: string,
   params: Record<string, unknown> = {},
-  revalidate = 60,
+  revalidate = 10,
 ) {
   try {
     return await client.fetch<T>(query, params, {next: {revalidate}})
