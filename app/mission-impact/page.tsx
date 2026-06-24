@@ -86,7 +86,7 @@ export default async function MissionImpactPage() {
     fetchSanity<any>(missionQuery),
     fetchSanity<any[]>(caseStudiesQuery),
   ])
-  const cmsCaseStudies = page?.caseStudies?.length ? page.caseStudies : caseStudiesData || []
+  const cmsCaseStudies = caseStudiesData || []
   const caseStudies = cmsCaseStudies.length ? cmsCaseStudies : fallbackCaseStudies
   const stats = page?.stats?.length ? page.stats : [{number: '93%', copy: 'Tempor aliqua incididunt magna, consequat culpa sunt esse non ullamco lorem Lorem deserunt caliqa.'}]
 
