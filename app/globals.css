@@ -2263,16 +2263,19 @@ textarea {
 }
 
 .mission-case-card {
+  align-items: start;
   display: grid;
   gap: 20px;
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
 .mission-case-card__image {
+  align-self: start;
   aspect-ratio: 16 / 9;
   border-radius: var(--radius);
   display: block;
   grid-column: 1 / 3;
+  height: auto;
   overflow: hidden;
 }
 
