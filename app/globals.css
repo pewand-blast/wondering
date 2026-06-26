@@ -2145,14 +2145,16 @@ textarea {
 .film-detail-logo {
   align-items: center;
   display: flex;
-  height: 52px;
   justify-content: flex-start;
+  min-height: 52px;
   min-width: 0;
+  overflow: visible;
 }
 
 .film-detail-logo img {
   height: auto;
   max-height: 52px;
+  max-width: 100%;
   object-fit: contain;
   width: auto;
 }
