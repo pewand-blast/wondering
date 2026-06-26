@@ -5,9 +5,17 @@ import {RichText} from '@/components/RichText'
 import {SanityImage} from '@/components/SanityImage'
 import {placeholderFilms} from '@/lib/fallbacks'
 import {filmBySlugQuery} from '@/lib/queries'
-import {fetchSanity} from '@/lib/sanity'
+import {fetchSanity, urlFor} from '@/lib/sanity'
 import {toPlainText} from '@/lib/text'
 import {getEmbedUrl} from '@/lib/video'
+
+function FilmLogoImage({image}: {image?: unknown}) {
+  if (!image) return null
+
+  const src = urlFor(image).width(600).auto('format').url()
+
+  return <img alt="" src={src} />
+}
 
 export default async function FilmPage({params}: {params: Promise<{slug: string}>}) {
   const {slug} = await params
@@ -84,7 +92,7 @@ export default async function FilmPage({params}: {params: Promise<{slug: string}
                 <div className="film-detail-logos" aria-label="Film logos">
                   {film.logos.map((logo: any) => (
                     <div className="film-detail-logo" key={logo._key}>
-                      <SanityImage image={logo.logo || logo} />
+                      <FilmLogoImage image={logo.logo || logo} />
                     </div>
                   ))}
                 </div>
