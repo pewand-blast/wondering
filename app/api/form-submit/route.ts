@@ -30,18 +30,26 @@ export async function POST(request: Request) {
     payload.set(key, value)
   }
 
-  const response = await fetch(`https://formsubmit.co/ajax/${encodeURIComponent(recipientEmail)}`, {
-    method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      Origin: origin,
-      Referer: referer,
-    },
-    body: payload,
-  })
+  let response: Response
+
+  try {
+    response = await fetch(`https://formsubmit.co/ajax/${encodeURIComponent(recipientEmail)}`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        Origin: origin,
+        Referer: referer,
+      },
+      body: payload,
+      signal: AbortSignal.timeout(15000),
+    })
+  } catch {
+    return NextResponse.json({ok: false, message: 'Unable to submit form'}, {status: 502})
+  }
+
   const result = await response.json().catch(() => null)
 
-  if (!response.ok || result?.success === 'false') {
+  if (!response.ok || result?.success === false || result?.success === 'false') {
     const message = typeof result?.message === 'string' ? result.message : 'Unable to submit form'
 
     return NextResponse.json({ok: false, message}, {status: 502})

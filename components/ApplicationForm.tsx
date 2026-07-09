@@ -1,6 +1,6 @@
 'use client'
 
-import {useId, useRef, useState} from 'react'
+import {FormEvent, useRef, useState} from 'react'
 
 type ApplicationFormField = {
   _key?: string
@@ -78,39 +78,45 @@ function autoCompleteFor(fieldId?: string) {
 export function ApplicationForm({labels}: {labels?: ApplicationFormLabels | null}) {
   const recipientEmail = labels?.recipientEmail || 'contact@wondering.com'
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle')
-  const iframeName = useId().replace(/:/g, '')
   const formRef = useRef<HTMLFormElement | null>(null)
-  const hasSubmitted = useRef(false)
 
-  function handleSubmit() {
-    hasSubmitted.current = true
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault()
     setStatus('sending')
-  }
 
-  function handleIframeLoad() {
-    if (!hasSubmitted.current) return
-    hasSubmitted.current = false
-    formRef.current?.reset()
-    window.setTimeout(() => {
+    const formData = new FormData(event.currentTarget)
+    const fields = Object.fromEntries(
+      Array.from(formData.entries()).map(([key, value]) => [key, String(value)]),
+    )
+
+    try {
+      const response = await fetch('/api/form-submit', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          formName: 'Wondering application form',
+          recipientEmail,
+          fields,
+        }),
+      })
+
+      if (!response.ok) throw new Error('Unable to submit form')
+
+      formRef.current?.reset()
       setStatus('success')
-    }, 300)
+    } catch {
+      setStatus('error')
+    }
   }
 
   const fields = labels?.fields?.length ? labels.fields : defaultFields(labels)
 
   return (
-    <>
     <form
-      action={`https://formsubmit.co/${encodeURIComponent(recipientEmail)}`}
       className="contact-form contact-form--application"
-      method="POST"
       onSubmit={handleSubmit}
       ref={formRef}
-      target={iframeName}
     >
-      <input name="_subject" type="hidden" value="Wondering application form" />
-      <input name="_template" type="hidden" value="table" />
-      <input name="_captcha" type="hidden" value="false" />
       {fields.map((field, index) => {
         const fieldId = field.fieldId || `field-${index + 1}`
         const label = field.label || 'Untitled field'
@@ -197,8 +203,7 @@ export function ApplicationForm({labels}: {labels?: ApplicationFormLabels | null
           <span aria-hidden="true" className="button-link__hover-bg" />
         </button>
       )}
+      {status === 'error' ? <p className="contact-form__status">Something went wrong. Please try again.</p> : null}
     </form>
-    <iframe aria-hidden="true" name={iframeName} onLoad={handleIframeLoad} style={{display: 'none'}} title="" />
-    </>
   )
 }
